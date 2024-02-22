@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from 'react'
 import services from '../services/services'
 import Notification from './Notifications'
@@ -7,15 +8,16 @@ import ChatRoom from './ChatRoom'
 import NavigationBar from './NavigationBar'
 
 
-const Home = () => {
+const ChatHome = () => {
 
   return (
     <div className='container'>
       <NavigationBar/>  
+      <PersonForm/>  
     </div>
     
   )
 }
 
-export default Home
+export default ChatHome
 

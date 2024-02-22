@@ -43,7 +43,7 @@ const PersonForm = (props) => {
           </Form.Group>
 
           <Form.Group>
-            <Form.Label> What chat room would you like you enter ? :  </Form.Label>
+            <Form.Label> What course chat room would you like you enter ? :  </Form.Label>
             <Form.Control 
               value={roomName} 
               onChange={changeRoomName}>
