@@ -13,7 +13,6 @@ const Home = () => {
       <NavigationBar/>
       <StudentInfo/>
     </div>
-    
   )
 }
 

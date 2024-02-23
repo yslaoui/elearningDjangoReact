@@ -1,5 +1,5 @@
 import axios from 'axios'
-const baseURL = 'http://127.0.0.1:8000/api/students'
+const baseURL = 'http://127.0.0.1:8000/api/courses'
 const createImageURL = 'http://127.0.0.1:8000/api/createImage/'
 
 const insertFile = (formData) => {
@@ -11,7 +11,7 @@ const insertFile = (formData) => {
 }
 
 const getAll = () => {
-    return axios.get(baseURL)
+    return axios.get(`${baseURL}/`)
 }
 
 const getDetail = (id) => {
