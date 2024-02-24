@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Form, Button } from 'react-bootstrap';
 import courseServices from '../services/courseServices';
+import NavigationBar from './NavigationBar';
 
 const CreateCourse = () => {
   const [course, setCourse] = useState({

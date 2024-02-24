@@ -11,6 +11,7 @@ const NavigationBar = () => {
           <Nav className="me-auto ms-3">
             <Nav.Link href="#home" className="fs-6">Home</Nav.Link>
             <Nav.Link href="/courses" className="fs-6">Courses</Nav.Link>
+            <Nav.Link href="/create-course" className="fs-6">Create a course</Nav.Link>
             <Nav.Link href="#login" className="fs-6">Login</Nav.Link>
             <Nav.Link href="/chatHome" className="fs-6">Chat</Nav.Link>
           </Nav>
