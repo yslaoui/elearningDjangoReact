@@ -3,6 +3,8 @@ import { useParams } from 'react-router-dom';
 import courseServices from '../services/courseServices';
 import enrollServices from '../services/enrollServices';
 import { Link } from 'react-router-dom';
+import NavigationBar from './NavigationBar';
+
 
 const CourseDetail = () => {
   const { id: courseId } = useParams(); // Get the course ID from URL parameters
@@ -40,6 +42,7 @@ const CourseDetail = () => {
 
   return (
     <div>
+      <NavigationBar/>
       <h2>{course.title}</h2>
       <p>{course.description}</p>
       <div>Start Date: {new Date(course.start_date).toLocaleDateString()}</div>

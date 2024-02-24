@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import contentServices from '../services/contentServices'; 
+import NavigationBar from './NavigationBar';
 
 const CourseContents = () => {
   const { id: courseId } = useParams();
@@ -18,6 +19,8 @@ const CourseContents = () => {
   }, [courseId]);
 
   return (
+    <>
+    <NavigationBar/>
     <div className="container mt-4">
       <h2>Course Contents</h2>
       {contents.length > 0 ? (
@@ -25,7 +28,6 @@ const CourseContents = () => {
           <div key={content.id} className="mb-3">
             <h3>{content.title}</h3>
             <p>{content.description}</p>
-            <h4>Section {content.order}</h4>
             {content.content_type === "pdf" && (
               <div>
                 <a href={content.file} target="_blank" rel="noopener noreferrer">
@@ -39,6 +41,7 @@ const CourseContents = () => {
         <p>No contents found for this course.</p>
       )}
     </div>
+    </>
   );
 };
 

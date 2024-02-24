@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import courseServices from '../services/courseServices';
 import { Link } from 'react-router-dom'; // For linking to individual course detail pages
-
+import NavigationBar from './NavigationBar';
 
 const CourseList = () => {
     const [courses, setCourses] = useState([]);
@@ -18,6 +18,7 @@ const CourseList = () => {
 
   return (
     <div>
+      <NavigationBar/>
       <h2>Available Courses</h2>
       {courses.length ? (
         <ul>

@@ -10,7 +10,6 @@ import StudentInfo from './StudentInfo'
 const Home = () => {
   return (
     <div className='container'>
-      <NavigationBar/>
       <StudentInfo/>
     </div>
   )

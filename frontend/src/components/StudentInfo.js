@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import studentServices from '../services/studentServices';
-
+import NavigationBar from './NavigationBar';
 
 const StudentInfo = () => {
   const [student, setStudent] = useState(null);
@@ -17,6 +17,7 @@ const StudentInfo = () => {
 
   return (
     <div>
+      <NavigationBar/>
       {student ? (
         <div>
           <h2>Student Information</h2>

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Form, Button, Row, Col } from 'react-bootstrap';
 import contentServices from '../services/contentServices'; 
 import { useLocation } from 'react-router-dom';
+import NavigationBar from './NavigationBar';
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
@@ -50,6 +51,8 @@ const UploadContent = () => {
   };
 
   return (
+    <div>
+    <NavigationBar/>  
     <Form onSubmit={handleSubmit}>
       <Row>
         <Col md={6}>
@@ -130,6 +133,7 @@ const UploadContent = () => {
         Upload Content
       </Button>
     </Form>
+  </div>
   );
 };
 

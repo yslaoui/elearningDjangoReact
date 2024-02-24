@@ -3,6 +3,7 @@ import services from '../services/services'
 import {Form, Button } from 'react-bootstrap'
 import { useParams } from 'react-router-dom'
 import { useLocation } from 'react-router-dom';
+import NavigationBar from './NavigationBar';
 
 /*
 We need the socket connection to be initaited only once when this component mounts, and not eahc time is re-rendered (eg not when state variables change)
@@ -62,6 +63,7 @@ const ChatRoom = (props) => {
 
   return (
       <>
+        <NavigationBar/>
         <h1> Chat Room {room_name} </h1>
         <h2> User {userName} </h2>
         <textarea name="" id="" cols="100" rows="10" 

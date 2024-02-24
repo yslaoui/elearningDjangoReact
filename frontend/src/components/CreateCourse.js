@@ -31,6 +31,8 @@ const CreateCourse = () => {
     };
 
   return (
+    <>
+    <NavigationBar/>
     <Form onSubmit={handleSubmit}>
       <Form.Group controlId="formCourseTitle">
         <Form.Label>Title</Form.Label>
@@ -78,6 +80,7 @@ const CreateCourse = () => {
         Create Course
       </Button>
     </Form>
+    </>
   );
 };
 
