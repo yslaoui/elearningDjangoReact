@@ -22,17 +22,21 @@ class StatusUpdateSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class CourseSerializer(serializers.ModelSerializer):
-    teacher = TeacherSerializer()  # Use TeacherSerializer for the teacher field
+    # nested teacher object
+    teacher_detail = TeacherSerializer(source='teacher', read_only=True)  # Use TeacherSerializer for the teacher field
+    # flat teacher id
+    teacher = serializers.PrimaryKeyRelatedField(queryset=Teacher.objects.all())
 
     class Meta:
         model = Course
-        fields = ['id', 'title', 'description', 'start_date', 'end_date', 'teacher']
+        fields = ['id', 'title', 'description', 'start_date', 'end_date', 'teacher', 'teacher_detail']
 
 class EnrollmentSerializer(serializers.ModelSerializer):
+    # Nested student and course objects
     student_detail = StudentSerializer(source='student', read_only=True)
     course_detail = CourseSerializer(source='course', read_only=True)
     enrollment_date = serializers.DateField(default=date.today, required=False)
-    # Define student and course fields to explicitly include them in the serialized representation
+    #  flat student and course fields ids
     student = serializers.PrimaryKeyRelatedField(queryset=Student.objects.all())
     course = serializers.PrimaryKeyRelatedField(queryset=Course.objects.all())
 

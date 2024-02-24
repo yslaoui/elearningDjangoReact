@@ -3,27 +3,24 @@ import getCsrfToken from './csrfToken';
 
 
 
-const baseURL = 'http://127.0.0.1:8000/api/courses'
-const createImageURL = 'http://127.0.0.1:8000/api/createImage/'
+const baseURL = 'http://127.0.0.1:8000/api/courses/'
 
-const insertFile = (formData) => {
-    return axios.post(createImageURL, formData, {
-        headers: {
-            'Content-Type': 'multipart/form-data'
-        }
-    })
-}
+const csrfToken = getCsrfToken();
+const config = {
+    headers: {'X-CSRFToken': csrfToken}
+};
+
 
 const getAll = () => {
-    return axios.get(`${baseURL}/`)
+    return axios.get(baseURL)
 }
 
 const getDetail = (id) => {
-    return axios.get(`${baseURL}/${id}/`)
+    return axios.get(`${baseURL}${id}/`)
 }
 
-const insert = (resource) => {
-    return axios.post(baseURL, resource)
+const insert = (resource) => {    
+    return axios.post(baseURL, resource, config)
 }
 
 const update = (url,  newNote) => {
@@ -39,6 +36,5 @@ export default {
     insert: insert, 
     update: update, 
     destroy: destroy, 
-    getDetail: getDetail, 
-    insertFile: insertFile
+    getDetail: getDetail
 }
