@@ -31,10 +31,15 @@ const destroy = (url) => {
     return axios.delete(url)
 }
 
+const getByCourseId = (courseId) => {
+    return axios.get(`${baseURL}?course=${courseId}`, config);
+};
+
 export default {
     getAll: getAll,
     insert: insert, 
     update: update, 
     destroy: destroy, 
-    getDetail: getDetail
+    getDetail: getDetail,
+    getByCourseId
 }

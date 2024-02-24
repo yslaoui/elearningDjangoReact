@@ -99,6 +99,17 @@ class ContentViewSet(viewsets.ModelViewSet):
             logger.error(serializer.errors)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    def get_queryset(self):
+            """
+            Optionally filters the returned contents by course.
+            """
+            queryset = self.queryset
+            course_id = self.request.query_params.get('course', None)
+            if course_id is not None:
+                queryset = queryset.filter(course__id=course_id)
+            return queryset
+
+
 class AssignmentViewSet(viewsets.ModelViewSet):
     queryset = Assignment.objects.all()
     serializer_class = AssignmentSerializer

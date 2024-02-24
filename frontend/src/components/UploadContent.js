@@ -1,8 +1,17 @@
 import React, { useState } from 'react';
 import { Form, Button, Row, Col } from 'react-bootstrap';
 import contentServices from '../services/contentServices'; 
+import { useLocation } from 'react-router-dom';
+
+function useQuery() {
+  return new URLSearchParams(useLocation().search);
+}
+
 
 const UploadContent = () => {
+  let query = useQuery();
+  const courseId = query.get("course");
+
   const [content, setContent] = useState({
     title: '',
     description: '',
@@ -10,6 +19,7 @@ const UploadContent = () => {
     content_type: '', 
     file: null,
   });
+
 
   const handleFileChange = (e) => {
     setContent({ ...content, file: e.target.files[0] });
@@ -28,7 +38,7 @@ const UploadContent = () => {
     formData.append('order', content.order);
     formData.append('content_type', content.content_type);
     formData.append('file', content.file);
-    formData.append('course', 1); 
+    formData.append('course', courseId); 
 
     contentServices.insert(formData) // Using the insert method from contentServices
       .then(response => {

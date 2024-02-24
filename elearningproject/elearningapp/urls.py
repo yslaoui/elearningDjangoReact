@@ -7,7 +7,6 @@ from django.contrib import admin
 from rest_framework.routers import DefaultRouter
 from .views import *
 
-# Create a router and register our viewsets with it.
 router = DefaultRouter()
 router.register(r'students', StudentViewSet)
 router.register(r'teachers', TeacherViewSet)
@@ -18,12 +17,14 @@ router.register(r'contents', ContentViewSet)
 router.register(r'assignments', AssignmentViewSet)
 router.register(r'submissions', SubmissionViewSet)
 
-
 urlpatterns = [
-    path('api/', include(router.urls)),  # Prefix all DRF URLs with 'api/'    re_path('.*', TemplateView.as_view(template_name='index.html')),
-    re_path('.*', TemplateView.as_view(template_name='index.html')),
+    path('admin/', admin.site.urls),
+    path('api/', include(router.urls)),
 ]
 
-# Serving static files in development
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+# I Reintroduce the catch-all route for React so that it does not interfere with the routes above
+urlpatterns += [re_path('.*', TemplateView.as_view(template_name='index.html'))]

@@ -8,7 +8,7 @@ import CourseList from './components/CourseList';
 import CourseDetail from './components/CourseDetail';
 import CreateCourse from './components/CreateCourse';
 import UploadContent from './components/UploadContent';
-
+import CourseContents from './components/CourseContent';
 
 const App = () => {
   return (
@@ -21,7 +21,8 @@ const App = () => {
         <Route path="/chat_room/:room_name" element={<ChatRoom/>} />
         <Route path="/create-course" element={<CreateCourse/>} />
         <Route path="/upload-content" element={<UploadContent/>} />
-
+        <Route path="/course/:id/contents" element={<CourseContents/>} />
+        
       </Routes>
     </Router>
   );
