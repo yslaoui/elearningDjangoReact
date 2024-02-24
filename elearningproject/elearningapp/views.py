@@ -40,24 +40,11 @@ class CourseViewSet(viewsets.ModelViewSet):
 class EnrollmentViewSet(viewsets.ModelViewSet):
     queryset = Enrollment.objects.all()
     serializer_class = EnrollmentSerializer
-    print("Hi from enrollment viewset")
+
     def create(self, request, *args, **kwargs):
-        print("Hi from the create method of the enrollment viewset")
-        logger.debug(f"Incoming request data: {request.data}")
-
-        # Step 3: Serializer validation
-        serializer = self.get_serializer(data=request.data)
-        if not serializer.is_valid():
-            logger.error(f"Serializer validation errors: {serializer.errors}")
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        else:
-            print("serializer is valid")
-
         student_id = request.data.get('student')
         course_id = request.data.get('course')
-        logger.debug(f"student_id: {student_id}")
-        logger.debug(f"course_id: {course_id}")
-        
+
         try:
             student = Student.objects.get(pk=student_id)
             course = Course.objects.get(pk=course_id)
@@ -69,6 +56,18 @@ class EnrollmentViewSet(viewsets.ModelViewSet):
                 # Attempt to create the Enrollment
                 Enrollment.objects.create(student=student, course=course, enrollment_date=timezone.now())
                 logger.info("Enrollment created successfully.")
+                
+                try:
+                    # Attempt to create the StatusUpdate
+                    StatusUpdate.objects.create(
+                        content=f"{student.first_name} {student.last_name} enrolled in {course.title}",
+                        posted_at=timezone.now(),
+                        student=student
+                    )
+                    logger.info("StatusUpdate created successfully.")
+                except Exception as e:
+                    logger.error(f"Failed to create StatusUpdate: {e}")
+                
                 return Response({'message': 'Enrollment successful.'}, status=status.HTTP_201_CREATED)
             except IntegrityError as e:
                 logger.error("Failed to create enrollment due to IntegrityError.")
@@ -77,18 +76,13 @@ class EnrollmentViewSet(viewsets.ModelViewSet):
                 logger.error("Failed to create enrollment due to an unexpected error.")
                 return Response({'message': 'Failed to create enrollment due to an unexpected error.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
          
-            StatusUpdate.objects.create(
-                content=f"{student.first_name} {student.last_name} enrolled in {course.title}",
-                posted_at=timezone.now(),
-                student=student
-            )
-            return Response({'message': 'Enrollment successful.'}, status=status.HTTP_201_CREATED)
-        except Student.DoesNotExist as e:
-            logger.error(f"Student with ID {student_id} not found: {e}")
+        except Student.DoesNotExist:
+            logger.error("Student not found.")
             return Response({'message': 'Student not found.'}, status=status.HTTP_404_NOT_FOUND)
-        except Course.DoesNotExist as e:
-            logger.error(f"Course with ID {course_id} not found: {e}")
+        except Course.DoesNotExist:
+            logger.error("Course not found.")
             return Response({'message': 'Course not found.'}, status=status.HTTP_404_NOT_FOUND)
+        
 
 class ContentViewSet(viewsets.ModelViewSet):
     queryset = Content.objects.all()

@@ -5,7 +5,7 @@ import enrollServices from '../services/enrollServices';
 const CourseDetail = () => {
   const { id: courseId } = useParams(); // Get the course ID from URL parameters
   const [course, setCourse] = useState(null);
-  const studentId = 3; 
+  const studentId = 4; 
 
   useEffect(() => {
     courseServices.getDetail(courseId)
