@@ -47,11 +47,14 @@ class EnrollmentSerializer(serializers.ModelSerializer):
 
 
 class ContentSerializer(serializers.ModelSerializer):
-    course = CourseSerializer(read_only=True)
-
+    # Nested course object
+    course_detail = CourseSerializer(source='course', read_only=True)
+    # flat course object
+    course = serializers.PrimaryKeyRelatedField(queryset=Course.objects.all())
     class Meta:
         model = Content
-        fields = '__all__'
+        fields = ['id', 'course', 'course_detail', 'title', 'description', 'order', 'content_type', 'file' ]
+
 
 class AssignmentSerializer(serializers.ModelSerializer):
     class Meta:

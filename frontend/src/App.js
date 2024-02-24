@@ -7,6 +7,8 @@ import ChatHome from './components/ChatHome';
 import CourseList from './components/CourseList';
 import CourseDetail from './components/CourseDetail';
 import CreateCourse from './components/CreateCourse';
+import UploadContent from './components/UploadContent';
+
 
 const App = () => {
   return (
@@ -18,6 +20,8 @@ const App = () => {
         <Route path="/chatHome" element={<ChatHome/>} />
         <Route path="/chat_room/:room_name" element={<ChatRoom/>} />
         <Route path="/create-course" element={<CreateCourse/>} />
+        <Route path="/upload-content" element={<UploadContent/>} />
+
       </Routes>
     </Router>
   );
