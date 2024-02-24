@@ -1,20 +1,37 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import courseServices from '../services/courseServices';
-
+import enrollServices from '../services/enrollServices';
 const CourseDetail = () => {
-  const { id } = useParams(); // Get the course ID from URL parameters
+  const { id: courseId } = useParams(); // Get the course ID from URL parameters
   const [course, setCourse] = useState(null);
+  const studentId = 3; 
 
   useEffect(() => {
-    courseServices.getDetail(id)
+    courseServices.getDetail(courseId)
       .then(response => {
         setCourse(response.data);
       })
       .catch(error => {
         console.error('Error fetching course details:', error);
       });
-  }, [id]);
+  }, [courseId]);
+
+  const handleEnrollment = () => {
+    enrollServices.enrollStudentInCourse(courseId, studentId)
+      .then(response => {
+        alert('Enrollment successful!'); // Provide user feedback
+      })
+      .catch(error => {
+        console.error('Enrollment failed:', error);
+        if (error.response && error.response.data && error.response.data.message === 'Student already enrolled.' ) {
+          alert('Student is already enrolled in this course')
+        }
+        else {
+          alert('Failed to enroll in course.'); // Provide user feedback
+        }
+      });
+  };
 
   // Check if course data is not yet loaded
   if (!course) return <div>Loading course details...</div>;
@@ -25,8 +42,8 @@ const CourseDetail = () => {
       <p>{course.description}</p>
       <div>Start Date: {new Date(course.start_date).toLocaleDateString()}</div>
       <div>End Date: {new Date(course.end_date).toLocaleDateString()}</div>
-      <div>Teacher: {course.teacher.first_name} {course.teacher.last_name} </div>
-
+      <div>Teacher: {course.teacher.first_name} {course.teacher.last_name}</div>
+      <button onClick={handleEnrollment}>Enroll in Course</button> {/* Enrollment button */}
     </div>
   );
 };

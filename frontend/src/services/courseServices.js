@@ -1,4 +1,8 @@
 import axios from 'axios'
+import getCsrfToken from './csrfToken';
+
+
+
 const baseURL = 'http://127.0.0.1:8000/api/courses'
 const createImageURL = 'http://127.0.0.1:8000/api/createImage/'
 

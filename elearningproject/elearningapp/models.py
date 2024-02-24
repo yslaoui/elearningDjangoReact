@@ -47,7 +47,7 @@ class Course(models.Model):
 class Enrollment(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
-    enrollment_date = models.DateField()
+    enrollment_date = models.DateField(null=True)
     grade = models.CharField(max_length=2, blank=True, null=True)
     # Grade is optional and can be left blank
 

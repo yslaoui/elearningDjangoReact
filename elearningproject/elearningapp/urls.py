@@ -20,7 +20,7 @@ router.register(r'submissions', SubmissionViewSet)
 
 
 urlpatterns = [
-    path('api/', include(router.urls)),  # Prefix all DRF URLs with 'api/'
+    path('api/', include(router.urls)),  # Prefix all DRF URLs with 'api/'    re_path('.*', TemplateView.as_view(template_name='index.html')),
     re_path('.*', TemplateView.as_view(template_name='index.html')),
 ]
 

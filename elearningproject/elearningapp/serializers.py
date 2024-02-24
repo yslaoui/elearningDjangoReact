@@ -1,5 +1,7 @@
-from rest_framework import serializers
+from rest_framework import serializers, status
 from .models import Student, Teacher, StatusUpdate, Course, Enrollment, Content, Assignment, Submission
+from datetime import date
+from rest_framework.response import Response
 
 class StudentSerializer(serializers.ModelSerializer):
     class Meta:
@@ -27,12 +29,17 @@ class CourseSerializer(serializers.ModelSerializer):
         fields = ['id', 'title', 'description', 'start_date', 'end_date', 'teacher']
 
 class EnrollmentSerializer(serializers.ModelSerializer):
-    student = StudentSerializer(read_only=True)
-    course = CourseSerializer(read_only=True)
+    student_detail = StudentSerializer(source='student', read_only=True)
+    course_detail = CourseSerializer(source='course', read_only=True)
+    enrollment_date = serializers.DateField(default=date.today, required=False)
+    # Define student and course fields to explicitly include them in the serialized representation
+    student = serializers.PrimaryKeyRelatedField(queryset=Student.objects.all())
+    course = serializers.PrimaryKeyRelatedField(queryset=Course.objects.all())
 
     class Meta:
         model = Enrollment
-        fields = '__all__'
+        # Explicitly list all fields you want to include in your API response
+        fields = ['id', 'student', 'course', 'enrollment_date', 'grade', 'student_detail', 'course_detail']
 
 
 class ContentSerializer(serializers.ModelSerializer):

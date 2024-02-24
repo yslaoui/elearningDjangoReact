@@ -26,7 +26,7 @@ const CourseList = () => {
               <h3>{course.title}</h3>
               <p>{course.description}</p>
               <Link to={`/course/${course.id}`}>View Course</Link>
-              {/* #TODO enroll button here */}
+              
             </li>
           ))}
         </ul>
