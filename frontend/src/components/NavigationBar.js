@@ -9,12 +9,12 @@ const NavigationBar = () => {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto ms-3">
-            <Nav.Link href="#home" className="fs-6">Home</Nav.Link>
+            <Nav.Link href="/" className="fs-6">Home</Nav.Link>
             <Nav.Link href="/courses" className="fs-6">Courses</Nav.Link>
             <Nav.Link href="/create-course" className="fs-6">Create a course</Nav.Link>
             <Nav.Link href="/upload-content" className="fs-6">upload Content</Nav.Link>
             <Nav.Link href="/course/1/contents" className="fs-6">View content </Nav.Link>
-            <Nav.Link href="#login" className="fs-6">Login</Nav.Link>
+            <Nav.Link href="/login" className="fs-6">Login</Nav.Link>
             <Nav.Link href="/chatHome" className="fs-6">Chat</Nav.Link>
           </Nav>
         </Navbar.Collapse>

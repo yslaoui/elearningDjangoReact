@@ -1,3 +1,4 @@
+from django.contrib.auth import authenticate, login
 from django.http import JsonResponse
 from rest_framework.decorators import api_view
 from django.shortcuts import render
@@ -10,9 +11,34 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_framework.response import Response
 import logging
 from django.db import IntegrityError
+from django.contrib.auth.decorators import login_required
+
 
 logger = logging.getLogger(__name__)
 
+# login view
+@api_view(['POST'])
+def login_request(request):
+    username = request.data.get('username')
+    password = request.data.get('password')
+    user = authenticate(request, username=username, password=password)
+    if user is not None:
+        login(request, user)
+        return Response({"message": "Authentication successful"}, status=status.HTTP_200_OK)
+    else:
+        return Response({"message": "Invalid username or password"}, status=status.HTTP_401_UNAUTHORIZED)
+    
+
+# endpoints that tells the front end which user is logged in
+@api_view(['GET'])
+@login_required
+def get_logged_in_student_info(request):
+    try:
+        student = Student.objects.get(user=request.user)
+        serializer = StudentSerializer(student)
+        return Response(serializer.data)
+    except Student.DoesNotExist:
+        return Response({"message": "Student not found"}, status=status.HTTP_404_NOT_FOUND)
 
 def index(request):
    return render(request, 'elearningapp/index.html' ) # this is the index.html as specified in settings.py templates[0].DIRS

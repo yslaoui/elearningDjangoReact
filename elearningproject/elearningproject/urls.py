@@ -18,10 +18,13 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from elearningapp.views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('elearningapp.urls')),
+    path('api/login/', login_request, name='login'),
+    path('', include('elearningapp.urls'))
+    
 ]
 
 if settings.DEBUG:
