@@ -23,6 +23,7 @@ from elearningapp.views import *
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/login/', login_request, name='login'),
+    path('api/current_student/', get_logged_in_student_info, name='current_student_info'),
     path('', include('elearningapp.urls'))
     
 ]

@@ -6,12 +6,12 @@ const StudentInfo = () => {
   const [student, setStudent] = useState(null);
 
   useEffect(() => {
-    studentServices.getDetail(1) // Fetching data for student with ID 1
+    studentServices.getCurrentStudent()
       .then(response => {
         setStudent(response.data);
       })
       .catch(error => {
-        console.error('Error fetching student data:', error);
+        console.error('Error fetching current student data:', error);
       });
   }, []);
 

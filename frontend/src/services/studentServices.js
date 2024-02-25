@@ -2,6 +2,7 @@ import axios from 'axios'
 import getCsrfToken from './csrfToken';
 const baseURL = 'http://127.0.0.1:8000/api/students'
 const createImageURL = 'http://127.0.0.1:8000/api/createImage/'
+const currentStudentURL = 'http://127.0.0.1:8000/api/current_student/'; // Add this line
 
 const insertFile = (formData) => {
     return axios.post(createImageURL, formData, {
@@ -31,11 +32,18 @@ const destroy = (url) => {
     return axios.delete(url)
 }
 
+const getCurrentStudent = () => {
+    // with credentials sends cookies to persist user between sessions
+    return axios.get(currentStudentURL, { withCredentials: true });
+  };
+
+
 export default {
     getAll: getAll,
     insert: insert, 
     update: update, 
     destroy: destroy, 
     getDetail: getDetail, 
-    insertFile: insertFile
+    insertFile: insertFile, 
+    getCurrentStudent:getCurrentStudent
 }
