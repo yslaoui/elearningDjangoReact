@@ -37,6 +37,10 @@ const getCurrentStudent = () => {
     return axios.get(currentStudentURL, { withCredentials: true });
   };
 
+const getStatusUpdates = () => {
+    return axios.get('http://127.0.0.1:8000/api/statusupdates/', { withCredentials: true });
+};
+
 
 export default {
     getAll: getAll,
@@ -45,5 +49,6 @@ export default {
     destroy: destroy, 
     getDetail: getDetail, 
     insertFile: insertFile, 
-    getCurrentStudent:getCurrentStudent
+    getCurrentStudent:getCurrentStudent, 
+    getStatusUpdates, getStatusUpdates
 }

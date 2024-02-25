@@ -12,6 +12,7 @@ from rest_framework.response import Response
 import logging
 from django.db import IntegrityError
 from django.contrib.auth.decorators import login_required
+from rest_framework.permissions import IsAuthenticated
 
 
 logger = logging.getLogger(__name__)
@@ -55,8 +56,19 @@ class TeacherViewSet(viewsets.ModelViewSet):
     serializer_class = TeacherSerializer
 
 class StatusUpdateViewSet(viewsets.ModelViewSet):
-    queryset = StatusUpdate.objects.all()
+    """
+    A viewset that returns status updates for the currently authenticated user.
+    """
     serializer_class = StatusUpdateSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        """
+        This view should return a list of all status updates
+        for the currently authenticated user.
+        """
+        user = self.request.user
+        return StatusUpdate.objects.filter(student__user=user)
 
 class CourseViewSet(viewsets.ModelViewSet):
     queryset = Course.objects.all()
