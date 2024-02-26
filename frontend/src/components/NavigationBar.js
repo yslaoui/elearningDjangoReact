@@ -16,6 +16,7 @@ const NavigationBar = () => {
             <Nav.Link href="/course/1/contents" className="fs-6">View content </Nav.Link>
             <Nav.Link href="/login" className="fs-6">Login</Nav.Link>
             <Nav.Link href="/chatHome" className="fs-6">Chat</Nav.Link>
+            <Nav.Link href="/register" className="fs-6">Register</Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Container>

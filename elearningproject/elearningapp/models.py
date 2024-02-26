@@ -7,7 +7,7 @@ class Student(models.Model):
     last_name = models.CharField(max_length=100, default = 'defaultlastname')
     age = models.PositiveIntegerField(null=True, blank=True)  # Optional
     university = models.CharField(max_length=255, null=True, blank=True)  # Optional
-    enrollment_date = models.DateField()
+    enrollment_date = models.DateField(null=True, blank=True)
 
     def __str__(self):
         return f"{self.first_name} {self.last_name} "   

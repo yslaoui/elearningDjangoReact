@@ -19,6 +19,7 @@ router.register(r'submissions', SubmissionViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api/register/', register_user, name='register_user'),
     path('api/', include(router.urls)),
 ]
 

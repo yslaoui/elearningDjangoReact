@@ -17,6 +17,38 @@ from rest_framework.permissions import IsAuthenticated
 
 logger = logging.getLogger(__name__)
 
+
+@api_view(['POST'])
+def register_user(request):
+    print("Request data:", request.data)
+    username = request.data.get('username')
+    password = request.data.get('password')
+    first_name = request.data.get('first_name')
+    last_name = request.data.get('last_name')
+    age = request.data.get('age')
+    university = request.data.get('university')
+
+
+    if User.objects.filter(username=username).exists():
+        return Response({"message": "Username already taken"}, status=status.HTTP_400_BAD_REQUEST)
+
+    user = User.objects.create_user(username=username, password=password)
+    user.first_name = first_name
+    user.last_name = last_name
+    user.save()
+
+    # I create a Student profile linked to the user
+    Student.objects.create(user=user, 
+                           first_name=first_name, 
+                           last_name=last_name,
+                           age=age,
+                           university=university
+                           )
+    
+    # I Automatically log in the user
+    login(request, user)
+    return Response({"message": "User registered successfully"}, status=status.HTTP_201_CREATED)
+
 # login view
 @api_view(['POST'])
 def login_request(request):

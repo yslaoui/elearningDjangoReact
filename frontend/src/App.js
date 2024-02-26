@@ -10,6 +10,7 @@ import CreateCourse from './components/CreateCourse';
 import UploadContent from './components/UploadContent';
 import CourseContents from './components/CourseContent';
 import LoginPage from './components/LoginPage';
+import RegistrationPage from './components/RegistrationPage';
 
 const App = () => {
   return (
@@ -24,6 +25,7 @@ const App = () => {
         <Route path="/create-course" element={<CreateCourse/>} />
         <Route path="/upload-content" element={<UploadContent/>} />
         <Route path="/course/:id/contents" element={<CourseContents/>} />
+        <Route path="/register" element={<RegistrationPage />} />
         
       </Routes>
     </Router>

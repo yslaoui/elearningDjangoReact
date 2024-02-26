@@ -44,7 +44,7 @@ const StudentInfo = () => {
           <p>Name: {student.first_name} {student.last_name}</p>
           <p>Age: {student.age}</p>
           <p>University: {student.university}</p>
-          <h3>Status Updates</h3>
+          <h2>Status Updates</h2>
           {statusUpdates.length > 0 ? (
             <ul>
               {statusUpdates.map((update) => (
