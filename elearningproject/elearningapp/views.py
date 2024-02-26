@@ -60,7 +60,7 @@ class StatusUpdateViewSet(viewsets.ModelViewSet):
     A viewset that returns status updates for the currently authenticated user.
     """
     serializer_class = StatusUpdateSerializer
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         """

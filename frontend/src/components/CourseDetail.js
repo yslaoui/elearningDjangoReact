@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import courseServices from '../services/courseServices';
 import enrollServices from '../services/enrollServices';
+import studentServices from '../services/studentServices';
 import { Link } from 'react-router-dom';
 import NavigationBar from './NavigationBar';
 
@@ -9,9 +10,10 @@ import NavigationBar from './NavigationBar';
 const CourseDetail = () => {
   const { id: courseId } = useParams(); // Get the course ID from URL parameters
   const [course, setCourse] = useState(null);
-  const studentId = 4; 
+  const [studentId,  setStudentId] = useState(null)
 
   useEffect(() => {
+    // Get the current course information
     courseServices.getDetail(courseId)
       .then(response => {
         setCourse(response.data);
@@ -19,7 +21,18 @@ const CourseDetail = () => {
       .catch(error => {
         console.error('Error fetching course details:', error);
       });
+
+    // get the logged in student id
+    studentServices.getCurrentStudent()
+      .then(response => {
+        setStudentId(response.data.id);
+      })
+      .catch(error => {
+        console.error('Error fetching logged-in student info:', error);
+      });
+    
   }, [courseId]);
+
 
   const handleEnrollment = () => {
     enrollServices.enrollStudentInCourse(courseId, studentId)

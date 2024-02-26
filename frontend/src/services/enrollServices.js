@@ -18,3 +18,5 @@ const enrollStudentInCourse = (courseId, studentId) => {
 export default {
     enrollStudentInCourse,
 };
+
+
