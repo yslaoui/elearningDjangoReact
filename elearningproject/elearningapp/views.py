@@ -79,6 +79,18 @@ class EnrollmentViewSet(viewsets.ModelViewSet):
     queryset = Enrollment.objects.all()
     serializer_class = EnrollmentSerializer
 
+    def get_queryset(self):
+        """
+        Optionally filters based on the logged in user
+        """
+        queryset = super().get_queryset()
+        user = self.request.user
+        if not user.is_anonymous:
+            student = Student.objects.filter(user=user).first()
+            if student:
+                queryset = queryset.filter(student=student)
+        return queryset
+
     def create(self, request, *args, **kwargs):
         student_id = request.data.get('student')
         course_id = request.data.get('course')

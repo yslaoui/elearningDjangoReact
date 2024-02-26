@@ -3,6 +3,8 @@ import getCsrfToken from './csrfToken';
 const baseURL = 'http://127.0.0.1:8000/api/students'
 const createImageURL = 'http://127.0.0.1:8000/api/createImage/'
 const currentStudentURL = 'http://127.0.0.1:8000/api/current_student/'; // Add this line
+const enrollmentsURL = 'http://127.0.0.1:8000/api/enrollments/';
+
 
 const insertFile = (formData) => {
     return axios.post(createImageURL, formData, {
@@ -41,6 +43,10 @@ const getStatusUpdates = () => {
     return axios.get('http://127.0.0.1:8000/api/statusupdates/', { withCredentials: true });
 };
 
+const getEnrolledCourses = () => {
+    return axios.get(enrollmentsURL, { withCredentials: true });
+};
+
 
 export default {
     getAll: getAll,
@@ -50,5 +56,6 @@ export default {
     getDetail: getDetail, 
     insertFile: insertFile, 
     getCurrentStudent:getCurrentStudent, 
-    getStatusUpdates, getStatusUpdates
+    getStatusUpdates, getStatusUpdates, 
+    getEnrolledCourses, getEnrolledCourses
 }

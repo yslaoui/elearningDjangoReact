@@ -5,6 +5,8 @@ import NavigationBar from './NavigationBar';
 const StudentInfo = () => {
   const [student, setStudent] = useState(null);
   const [statusUpdates, setStatusUpdates] = useState([]);
+  const [enrolledCourses, setEnrolledCourses] = useState([]);
+
 
   useEffect(() => {
     let currentStudent = null;
@@ -21,6 +23,16 @@ const StudentInfo = () => {
       .catch(error => {
         console.error('Error fetching data:', error);
       });
+  
+      studentServices.getEnrolledCourses()
+      .then(response => {
+          const enrolledCourses = response.data.map(enrollment => enrollment.course_detail);
+          setEnrolledCourses(enrolledCourses);
+      })
+      .catch(error => {
+          console.error('Error fetching enrolled courses:', error);
+      });
+  
   }, []);
 
   return (
@@ -42,7 +54,28 @@ const StudentInfo = () => {
           ) : (
             <p>No status updates found.</p>
           )}
+
+          <h2>Enrolled Courses</h2>
+          {enrolledCourses.length ? (
+              <ul>
+                  {enrolledCourses.map(course => (
+                      <li key={course.id}>
+                          <h3>{course.title}</h3>
+                          <p>{course.description}</p>
+                      </li>
+                  ))}
+              </ul>
+          ) : (
+              <p>No courses found.</p>
+          )}
+     
+  
+       
         </div>
+
+
+
+
       ) : (
         <div>Loading or no student found...</div>
       )}
