@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User, Group
 from django.contrib.auth import authenticate, login
 from django.http import JsonResponse
 from rest_framework.decorators import api_view
@@ -44,6 +45,11 @@ def register_user(request):
                            age=age,
                            university=university
                            )
+    
+    # Assign user to group
+    group_name = 'Students'  # Assuming you want all new registrations to be Students
+    group, created = Group.objects.get_or_create(name=group_name)
+    user.groups.add(group)
     
     # I Automatically log in the user
     login(request, user)
