@@ -9,8 +9,9 @@ const RegistrationPage = () => {
         password: '',
         first_name: '',
         last_name: '',
-        age: '', // Keeping age as a string in the state for input handling
-        university: ''
+        age: '', // Keeping age as a string in the state for input handling.  Will be parsed as interger before sending to backend
+        university: '', 
+        role: ''
     });
 
     const navigate = useNavigate();
@@ -44,6 +45,17 @@ const RegistrationPage = () => {
                 <div className="w-100" style={{ maxWidth: "400px" }}>
                     <h2>Create Your Account</h2>
                     <Form onSubmit={handleSubmit}>
+                        
+                        <Form.Group className="mb-3" controlId="formBasicRole">
+                            <Form.Label>Role</Form.Label>
+                            <Form.Control as="select" name="role" value={userData.role} onChange={handleChange} required>
+                                <option value="">Select Role</option>
+                                <option value="Students">Student</option>
+                                <option value="Teachers">Teacher</option>
+                            </Form.Control>
+                        </Form.Group>                        
+                        
+                        
                         <Form.Group className="mb-3" controlId="formBasicUsername">
                             <Form.Label>Username</Form.Label>
                             <Form.Control type="text" name="username" placeholder="Enter username" value={userData.username} onChange={handleChange} required />

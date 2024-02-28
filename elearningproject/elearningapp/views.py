@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate, login
 from django.http import JsonResponse
 from rest_framework.decorators import api_view
 from django.shortcuts import render
-from rest_framework import viewsets, status
+from rest_framework import viewsets, status, permissions
 from .models import *
 from .serializers import *
 from django.utils import timezone
@@ -14,7 +14,7 @@ import logging
 from django.db import IntegrityError
 from django.contrib.auth.decorators import login_required
 from rest_framework.permissions import IsAuthenticated
-
+from .permissions import IsTeacher, IsStudent
 
 logger = logging.getLogger(__name__)
 
@@ -38,19 +38,30 @@ def register_user(request):
     user.last_name = last_name
     user.save()
 
-    # I create a Student profile linked to the user
-    Student.objects.create(user=user, 
-                           first_name=first_name, 
-                           last_name=last_name,
-                           age=age,
-                           university=university
-                           )
+    # I create a student/teacher instance depending on the role
+    role = request.data.get('role')
+    if role == 'Students':
+        Student.objects.create(user=user, 
+                               first_name=first_name, 
+                               last_name=last_name,
+                               age=age,
+                               university=university
+                               )
+    elif role == 'Teachers':
+        Teacher.objects.create(user=user, 
+                               first_name=first_name, 
+                               last_name=last_name,
+                               age=age,
+                               university=university
+                               )    
+    # I Assign user to group based on selected role
     
-    # Assign user to group
-    group_name = 'Students'  # Assuming you want all new registrations to be Students
-    group, created = Group.objects.get_or_create(name=group_name)
-    user.groups.add(group)
-    
+    if role in ['Students', 'Teachers']:  # Safety check
+        group, created = Group.objects.get_or_create(name=role)
+        user.groups.add(group)
+    else:
+        return Response({"message": "Invalid role specified"}, status=status.HTTP_400_BAD_REQUEST)
+
     # I Automatically log in the user
     login(request, user)
     return Response({"message": "User registered successfully"}, status=status.HTTP_201_CREATED)
@@ -111,6 +122,14 @@ class StatusUpdateViewSet(viewsets.ModelViewSet):
 class CourseViewSet(viewsets.ModelViewSet):
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
+
+    # only teachers can create, update, and delete courses
+    def get_permissions(self):
+        if self.action in ['create', 'update', 'patch', 'destroy']:
+            permission_classes = [IsTeacher]
+        else:
+            permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+        return [permission() for permission in permission_classes]
 
 
 class EnrollmentViewSet(viewsets.ModelViewSet):
@@ -176,9 +195,20 @@ class ContentViewSet(viewsets.ModelViewSet):
     queryset = Content.objects.all()
     serializer_class = ContentSerializer
 
+    def get_permissions(self):
+        """
+        Instantiates and returns the list of permissions that this view requires.
+        """
+        if self.action == 'create':
+            permission_classes = [IsTeacher]
+        else:
+            permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+        return [permission() for permission in permission_classes]
+
     def create(self, request, *args, **kwargs):
         logger.debug(request.data)
         serializer = self.get_serializer(data=request.data)
+
         if serializer.is_valid():
             self.perform_create(serializer)
             headers = self.get_success_headers(serializer.data)
