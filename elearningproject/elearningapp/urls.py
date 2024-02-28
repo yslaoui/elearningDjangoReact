@@ -21,6 +21,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/register/', register_user, name='register_user'),
     path('api/', include(router.urls)),
+    path('api/user-roles/', get_user_roles, name='get_user_roles')
 ]
 
 if settings.DEBUG:

@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import studentServices from '../services/studentServices';
 import NavigationBar from './NavigationBar';
+import loginServices from '../services/loginServices';
 
 const StudentInfo = () => {
   const [student, setStudent] = useState(null);
   const [statusUpdates, setStatusUpdates] = useState([]);
   const [enrolledCourses, setEnrolledCourses] = useState([]);
+  const [userRoles, setUserRoles] = useState([]);
 
 
   useEffect(() => {
@@ -32,7 +34,11 @@ const StudentInfo = () => {
       .catch(error => {
           console.error('Error fetching enrolled courses:', error);
       });
-  
+
+     // I retrieve user roles from local storage
+     const roles = JSON.parse(localStorage.getItem('userRoles') || '[]');
+     setUserRoles(roles);
+     console.log('roles', roles)  
   }, []);
 
   return (
@@ -44,6 +50,7 @@ const StudentInfo = () => {
           <p>Name: {student.first_name} {student.last_name}</p>
           <p>Age: {student.age}</p>
           <p>University: {student.university}</p>
+          <p>Roles: {userRoles.map(role => role.endsWith('s') ? role.slice(0, -1) : role).join(', ')}</p>
           <h2>Status Updates</h2>
           {statusUpdates.length > 0 ? (
             <ul>
@@ -72,10 +79,6 @@ const StudentInfo = () => {
   
        
         </div>
-
-
-
-
       ) : (
         <div>Loading or no student found...</div>
       )}

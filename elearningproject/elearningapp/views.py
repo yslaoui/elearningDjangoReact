@@ -15,8 +15,20 @@ from django.db import IntegrityError
 from django.contrib.auth.decorators import login_required
 from rest_framework.permissions import IsAuthenticated
 from .permissions import IsTeacher, IsStudent
+from rest_framework.decorators import api_view, permission_classes
+
 
 logger = logging.getLogger(__name__)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_user_roles(request):
+    # Here I assume a user can have multiple groups
+    roles = request.user.groups.all().values_list('name', flat=True)
+    print("the roles are ...")
+    print(roles)
+    return Response({"roles": list(roles)})
+    
 
 
 @api_view(['POST'])
