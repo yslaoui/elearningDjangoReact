@@ -102,6 +102,17 @@ def get_logged_in_student_info(request):
     except Student.DoesNotExist:
         return Response({"message": "Student not found"}, status=status.HTTP_404_NOT_FOUND)
 
+# endpoints that tells the front end which user is logged in
+@api_view(['GET'])
+@login_required
+def get_logged_in_teacher_info(request):
+    try:
+        teacher = Teacher.objects.get(user=request.user)
+        serializer = TeacherSerializer(teacher)
+        return Response(serializer.data)
+    except Teacher.DoesNotExist:
+        return Response({"message": "Teacher not found"}, status=status.HTTP_404_NOT_FOUND)
+
 def index(request):
    return render(request, 'elearningapp/index.html' ) # this is the index.html as specified in settings.py templates[0].DIRS
 

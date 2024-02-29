@@ -24,6 +24,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/login/', login_request, name='login'),
     path('api/current_student/', get_logged_in_student_info, name='current_student_info'),
+    path('api/current_teacher/', get_logged_in_teacher_info, name='current_teacher_info'),
     path('', include('elearningapp.urls'))
     
 ]
