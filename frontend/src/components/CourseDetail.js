@@ -7,10 +7,12 @@ import { Link } from 'react-router-dom';
 import NavigationBar from './NavigationBar';
 
 
+
 const CourseDetail = () => {
   const { id: courseId } = useParams(); // Get the course ID from URL parameters
   const [course, setCourse] = useState(null);
   const [studentId,  setStudentId] = useState(null)
+  const [isEnrolled, setIsEnrolled] = useState(false);
 
   useEffect(() => {
     // Get the current course information
@@ -29,6 +31,16 @@ const CourseDetail = () => {
       })
       .catch(error => {
         console.error('Error fetching logged-in student info:', error);
+      });
+
+    // Check if the student is enrolled in the course
+    studentServices.getEnrolledCourses()
+      .then(response => {
+        const enrolledCourseIds = response.data.map(enrollment => enrollment.course);
+        setIsEnrolled(enrolledCourseIds.includes(parseInt(courseId)));
+      })
+      .catch(error => {
+        console.error('Error checking course enrollment:', error);
       });
     
   }, [courseId]);
@@ -62,8 +74,14 @@ const CourseDetail = () => {
       <div>End Date: {new Date(course.end_date).toLocaleDateString()}</div>
       <div>Teacher: {course.teacher.first_name} {course.teacher.last_name}</div>
       <button onClick={handleEnrollment}>Enroll in Course</button> {/* Enrollment button */}
-      <br />
-      <Link to={`/course/${courseId}/contents`} className="btn btn-primary ml-2">View Contents</Link>
+      <br /> 
+      {/* Conditionally render the "View Contents" button */}
+      {isEnrolled && (
+        <>
+          <br />
+          <Link to={`/course/${courseId}/contents`} className="btn btn-primary ml-2">View Contents</Link>
+        </>
+      )}
       <br />
       <Link to={`/upload-content?course=${courseId}`} className="btn btn-secondary ml-2">Add Content</Link>
 

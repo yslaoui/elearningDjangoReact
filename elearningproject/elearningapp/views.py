@@ -14,7 +14,7 @@ import logging
 from django.db import IntegrityError
 from django.contrib.auth.decorators import login_required
 from rest_framework.permissions import IsAuthenticated
-from .permissions import IsTeacher, IsStudent
+from .permissions import IsTeacher, IsStudent, IsEnrolled, IsEnrolledOrIsTeacher
 from rest_framework.decorators import api_view, permission_classes
 
 
@@ -135,14 +135,14 @@ class CourseViewSet(viewsets.ModelViewSet):
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
 
-    # only teachers can create, update, and delete courses
     def get_permissions(self):
-        if self.action in ['create', 'update', 'patch', 'destroy']:
-            permission_classes = [IsTeacher]
+        if self.action in ['list', 'retrieve']:  # Apply to both listing and retrieving courses
+            permission_classes = [permissions.IsAuthenticated]
+        elif self.action in ['create', 'update', 'patch', 'destroy']:
+            permission_classes = [IsTeacher]  # Only teachers can modify the course details
         else:
-            permission_classes = [permissions.IsAuthenticatedOrReadOnly]
-        return [permission() for permission in permission_classes]
-
+            permission_classes = [permissions.IsAuthenticated]  # Default permission for other actions
+        return [permission() for permission in permission_classes]    
 
 class EnrollmentViewSet(viewsets.ModelViewSet):
     queryset = Enrollment.objects.all()
@@ -216,7 +216,7 @@ class ContentViewSet(viewsets.ModelViewSet):
         else:
             permission_classes = [permissions.IsAuthenticatedOrReadOnly]
         return [permission() for permission in permission_classes]
-
+    
     def create(self, request, *args, **kwargs):
         logger.debug(request.data)
         serializer = self.get_serializer(data=request.data)
@@ -230,14 +230,18 @@ class ContentViewSet(viewsets.ModelViewSet):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def get_queryset(self):
-            """
-            Optionally filters the returned contents by course.
-            """
-            queryset = self.queryset
-            course_id = self.request.query_params.get('course', None)
-            if course_id is not None:
-                queryset = queryset.filter(course__id=course_id)
-            return queryset
+        """
+        This view returns a list of all the content for the courses
+        that the currently authenticated user is enrolled in.
+        """
+        user = self.request.user
+        if user.groups.filter(name='Teachers').exists():
+            # If the user is a teacher, return all content.
+            return Content.objects.all()
+        else:
+            # If the user is a student, return content only for the courses they are enrolled in.
+            enrolled_courses = Enrollment.objects.filter(student__user=user).values_list('course', flat=True)
+            return Content.objects.filter(course__id__in=enrolled_courses)
 
 
 class AssignmentViewSet(viewsets.ModelViewSet):

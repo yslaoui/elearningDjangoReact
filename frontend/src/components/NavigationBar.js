@@ -2,6 +2,12 @@ import React from 'react';
 import { Navbar, Nav, Container } from 'react-bootstrap';
 
 const NavigationBar = () => {
+  // Fetch user roles from local storage
+  const userRoles = JSON.parse(localStorage.getItem('userRoles')) || [];
+
+  // Check if user is a teacher
+  const isTeacher = userRoles.includes('Teacher');
+
   return (
     <Navbar bg="dark" variant="dark" expand="lg">
       <Container>
@@ -11,8 +17,8 @@ const NavigationBar = () => {
           <Nav className="me-auto ms-3">
             <Nav.Link href="/" className="fs-6">Home</Nav.Link>
             <Nav.Link href="/courses" className="fs-6">Courses</Nav.Link>
-            <Nav.Link href="/create-course" className="fs-6">Create a course</Nav.Link>
-            <Nav.Link href="/upload-content" className="fs-6">upload Content</Nav.Link>
+            {isTeacher && <Nav.Link href="/create-course" className="fs-6">Create a course</Nav.Link>}
+            {isTeacher && <Nav.Link href="/upload-content" className="fs-6">Upload Content</Nav.Link>}
             <Nav.Link href="/course/1/contents" className="fs-6">View content </Nav.Link>
             <Nav.Link href="/login" className="fs-6">Login</Nav.Link>
             <Nav.Link href="/chatHome" className="fs-6">Chat</Nav.Link>
@@ -25,4 +31,3 @@ const NavigationBar = () => {
 };
 
 export default NavigationBar;
-
