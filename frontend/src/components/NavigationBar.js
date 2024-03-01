@@ -1,13 +1,23 @@
 import React from 'react';
-import { Navbar, Nav, Container } from 'react-bootstrap';
+import { Navbar, Nav, Container, Button } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
+import loginServices from '../services/loginServices';
 
 const NavigationBar = () => {
+  const navigate = useNavigate(); 
   // Fetch user roles from local storage
   const userRoles = JSON.parse(localStorage.getItem('userRoles')) || [];
 
   // Check if user is a teacher
   const isTeacher = userRoles.includes('Teacher');
 
+  const handleLogout = () => {
+    loginServices.logout().then(() => {
+        navigate('/login');
+    }).catch(error => {
+        console.error('Logout failed:', error);
+    });
+};
   return (
     <Navbar bg="dark" variant="dark" expand="lg">
       <Container>
@@ -25,6 +35,7 @@ const NavigationBar = () => {
             <Nav.Link href="/chatHome" className="fs-6">Chat</Nav.Link>
             <Nav.Link href="/register" className="fs-6">Register</Nav.Link>
           </Nav>
+          <Button onClick={handleLogout}>Logout</Button>
         </Navbar.Collapse>
       </Container>
     </Navbar>

@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User, Group
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.http import JsonResponse
 from rest_framework.decorators import api_view
 from django.shortcuts import render
@@ -18,6 +18,8 @@ from .permissions import IsTeacher, IsStudent, IsEnrolled, IsEnrolledOrIsTeacher
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework import filters
 
+
+
 logger = logging.getLogger(__name__)
 
 @api_view(['GET'])
@@ -28,6 +30,12 @@ def get_user_roles(request):
     print("the roles are ...")
     print(roles)
     return Response({"roles": list(roles)})
+
+@api_view(['POST'])
+def logout_request(request):
+    logout(request)
+    return Response({"message": "Logged out successfully"}, status=200)
+
     
 
 

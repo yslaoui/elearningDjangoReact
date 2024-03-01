@@ -27,6 +27,11 @@ const LoginPage = () => {
     }
   };
 
+  const handleRegister = () => {
+    navigate('/register');
+  };
+
+
   return (
     <>
     <Container className="d-flex align-items-center justify-content-center" style={{ minHeight: "100vh" }}>
@@ -44,11 +49,18 @@ const LoginPage = () => {
             <Form.Label>Password</Form.Label>
             <Form.Control type="password" name="password" value={credentials.password} onChange={handleChange} placeholder="Password" />
           </Form.Group>
+          <div className="d-flex justify-content-between">
+              <Button variant="primary" type="submit">
+                Login
+              </Button>
+              <Button variant="secondary" onClick={handleRegister} style={{ marginLeft: '20px' }}>
+                Register
+              </Button>
+          </div>    
 
-          <Button variant="primary" type="submit">
-            Login
-          </Button>
         </Form>
+
+
       </div>
     </Container>
     </>

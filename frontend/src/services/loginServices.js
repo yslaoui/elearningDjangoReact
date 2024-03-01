@@ -1,6 +1,16 @@
 import axios from 'axios';
 import getCsrfToken from './csrfToken';
 
+const logout = () => {
+    const csrfToken = getCsrfToken();
+    const config = {
+        headers: {'X-CSRFToken': csrfToken},
+        withCredentials: true // Ensure cookies are sent with the request
+    };
+
+    return axios.post('http://127.0.0.1:8000/api/logout/', {}, config);
+};
+
 const login = async (username, password) => {
     const csrfToken = getCsrfToken();
     const postData = {
@@ -25,6 +35,10 @@ const login = async (username, password) => {
     return loginResponse;
 };
 
+
+
+
 export default {
     login,
+    logout,
 };
