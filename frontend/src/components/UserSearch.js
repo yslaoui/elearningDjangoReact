@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Table, Form } from 'react-bootstrap';
 import studentServices from '../services/studentServices';
+import { Link } from 'react-router-dom';
 
 const UserSearch = () => {
   const [students, setStudents] = useState([]);
@@ -49,7 +50,7 @@ const UserSearch = () => {
           <tbody>
             {filteredStudents.map((student, index) => (
               <tr key={index}>
-                <td>{index + 1}</td>
+                <td><Link to={`/student-detail/${student.id}`}>{student.id}</Link></td>
                 <td>{student.first_name}</td>
                 <td>{student.last_name}</td>
                 <td>{student.university}</td>

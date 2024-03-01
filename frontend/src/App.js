@@ -12,6 +12,8 @@ import CourseContents from './components/CourseContent';
 import LoginPage from './components/LoginPage';
 import RegistrationPage from './components/RegistrationPage';
 import UserSearch from './components/UserSearch';
+import StudentDetail from './components/StudentDetail';
+
 
 const App = () => {
   return (
@@ -28,6 +30,7 @@ const App = () => {
         <Route path="/course/:id/contents" element={<CourseContents/>} />
         <Route path="/register" element={<RegistrationPage />} />
         <Route path="/user-search" element={<UserSearch />} />
+        <Route path="/student-detail/:id" element={<StudentDetail />} />
         
       </Routes>
     </Router>
