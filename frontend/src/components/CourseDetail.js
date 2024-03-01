@@ -13,8 +13,14 @@ const CourseDetail = () => {
   const [course, setCourse] = useState(null);
   const [studentId,  setStudentId] = useState(null)
   const [isEnrolled, setIsEnrolled] = useState(false);
+  const [isTeacher, setIsTeacher] = useState(false);
+
 
   useEffect(() => {
+
+    const roles = JSON.parse(localStorage.getItem('userRoles') || '[]');
+    setIsTeacher(roles.includes('Teachers'));
+
     // Get the current course information
     courseServices.getDetail(courseId)
       .then(response => {
@@ -24,8 +30,12 @@ const CourseDetail = () => {
         console.error('Error fetching course details:', error);
       });
 
-    // get the logged in student id
-    studentServices.getCurrentStudent()
+
+
+    if (roles.includes('Students')) 
+    {
+      // get the logged in student id
+      studentServices.getCurrentStudent()
       .then(response => {
         setStudentId(response.data.id);
       })
@@ -42,6 +52,7 @@ const CourseDetail = () => {
       .catch(error => {
         console.error('Error checking course enrollment:', error);
       });
+    }
     
   }, [courseId]);
 
@@ -68,6 +79,7 @@ const CourseDetail = () => {
   return (
     <div>
       <NavigationBar/>
+      <p>is teacher state:  {isTeacher}</p>
       <h2>{course.title}</h2>
       <p>{course.description}</p>
       <div>Start Date: {new Date(course.start_date).toLocaleDateString()}</div>
@@ -75,13 +87,14 @@ const CourseDetail = () => {
       <div>Teacher: {course.teacher.first_name} {course.teacher.last_name}</div>
       <button onClick={handleEnrollment}>Enroll in Course</button> {/* Enrollment button */}
       <br /> 
-      {/* Conditionally render the "View Contents" button */}
-      {isEnrolled && (
+      {/* Show viewContents button if user is student and enrolled or if user role is  teacher */}
+      {(isEnrolled || isTeacher) && (
         <>
           <br />
           <Link to={`/course/${courseId}/contents`} className="btn btn-primary ml-2">View Contents</Link>
         </>
       )}
+
       <br />
       <Link to={`/upload-content?course=${courseId}`} className="btn btn-secondary ml-2">Add Content</Link>
 

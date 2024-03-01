@@ -244,16 +244,28 @@ class ContentViewSet(viewsets.ModelViewSet):
         """
         This view returns a list of all the content for the courses
         that the currently authenticated user is enrolled in.
+        Additionally, it allows filtering by a specific course if a 'course'
+        query parameter is provided.
         """
+        course_id = self.request.query_params.get('course')
+        print("Course ID from query params:", course_id)
+
         user = self.request.user
+        queryset = Content.objects.all()  
+        print('And the queryset is ....')
+        print(queryset)
+        # Check for 'course' query parameter
+        course_id = self.request.query_params.get('course')
+        if course_id:
+            queryset = queryset.filter(course__id=course_id)
+
         if user.groups.filter(name='Teachers').exists():
             # If the user is a teacher, return all content.
-            return Content.objects.all()
+            return queryset  # Return filtered queryset if 'course' parameter was provided
         else:
             # If the user is a student, return content only for the courses they are enrolled in.
             enrolled_courses = Enrollment.objects.filter(student__user=user).values_list('course', flat=True)
-            return Content.objects.filter(course__id__in=enrolled_courses)
-
+            return queryset.filter(course__id__in=enrolled_courses)
 
 class AssignmentViewSet(viewsets.ModelViewSet):
     queryset = Assignment.objects.all()
