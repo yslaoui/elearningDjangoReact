@@ -16,7 +16,7 @@ from django.contrib.auth.decorators import login_required
 from rest_framework.permissions import IsAuthenticated
 from .permissions import IsTeacher, IsStudent, IsEnrolled, IsEnrolledOrIsTeacher
 from rest_framework.decorators import api_view, permission_classes
-
+from rest_framework import filters
 
 logger = logging.getLogger(__name__)
 
@@ -122,10 +122,16 @@ def room(request, room_name):
 class StudentViewSet(viewsets.ModelViewSet):
     queryset = Student.objects.all()
     serializer_class = StudentSerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['first_name', 'last_name', 'university']
 
 class TeacherViewSet(viewsets.ModelViewSet):
     queryset = Teacher.objects.all()
     serializer_class = TeacherSerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['first_name', 'last_name', 'university']
+
+
 
 class StatusUpdateViewSet(viewsets.ModelViewSet):
     """

@@ -11,6 +11,7 @@ import UploadContent from './components/UploadContent';
 import CourseContents from './components/CourseContent';
 import LoginPage from './components/LoginPage';
 import RegistrationPage from './components/RegistrationPage';
+import UserSearch from './components/UserSearch';
 
 const App = () => {
   return (
@@ -26,6 +27,7 @@ const App = () => {
         <Route path="/upload-content" element={<UploadContent/>} />
         <Route path="/course/:id/contents" element={<CourseContents/>} />
         <Route path="/register" element={<RegistrationPage />} />
+        <Route path="/user-search" element={<UserSearch />} />
         
       </Routes>
     </Router>

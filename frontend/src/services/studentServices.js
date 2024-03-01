@@ -5,6 +5,13 @@ const createImageURL = 'http://127.0.0.1:8000/api/createImage/'
 const currentStudentURL = 'http://127.0.0.1:8000/api/current_student/'; 
 const enrollmentsURL = 'http://127.0.0.1:8000/api/enrollments/';
 
+const config = {
+    headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': getCsrfToken(),
+    },
+    withCredentials: true, 
+};
 
 const insertFile = (formData) => {
     return axios.post(createImageURL, formData, {
@@ -15,7 +22,7 @@ const insertFile = (formData) => {
 }
 
 const getAll = () => {
-    return axios.get(baseURL)
+    return axios.get(`${baseURL}/`)
 }
 
 const getDetail = (id) => {
@@ -29,6 +36,11 @@ const insert = (resource) => {
 const update = (url,  newNote) => {
     return axios.put(url, newNote)
 }
+
+const searchStudents = (searchTerm) => {
+    return axios.get(`${baseURL}?search=${searchTerm}`, config);
+};
+
 
 const destroy = (url) => {
     return axios.delete(url)
@@ -49,6 +61,8 @@ const getEnrolledCourses = () => {
 
 
 
+
+
 export default {
     getAll: getAll,
     insert: insert, 
@@ -57,6 +71,7 @@ export default {
     getDetail: getDetail, 
     insertFile: insertFile, 
     getCurrentStudent:getCurrentStudent, 
-    getStatusUpdates, getStatusUpdates, 
-    getEnrolledCourses, getEnrolledCourses
+    getStatusUpdates: getStatusUpdates, 
+    getEnrolledCourses: getEnrolledCourses,
+    searchStudents: searchStudents
 }

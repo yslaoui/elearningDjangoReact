@@ -24,9 +24,14 @@ const getCurrentTeacher = () => {
     return axios.get(currentTeacherURL, { withCredentials: true });
   };
 
+  const searchTeachers = (searchTerm) => {
+    return axios.get(`${baseURL}?search=${searchTerm}`, config);
+};
+
 
 export default {
     getAllTeachers,
     getTeacherDetail,
     getCurrentTeacher,
+    searchTeachers
 };

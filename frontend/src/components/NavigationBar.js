@@ -20,6 +20,7 @@ const NavigationBar = () => {
             {isTeacher && <Nav.Link href="/create-course" className="fs-6">Create a course</Nav.Link>}
             {isTeacher && <Nav.Link href="/upload-content" className="fs-6">Upload Content</Nav.Link>}
             <Nav.Link href="/course/1/contents" className="fs-6">View content </Nav.Link>
+            <Nav.Link href="/user-search" className="fs-6">User Search </Nav.Link>
             <Nav.Link href="/login" className="fs-6">Login</Nav.Link>
             <Nav.Link href="/chatHome" className="fs-6">Chat</Nav.Link>
             <Nav.Link href="/register" className="fs-6">Register</Nav.Link>
