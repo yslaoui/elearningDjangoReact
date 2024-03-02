@@ -9,7 +9,7 @@ const NavigationBar = () => {
   const userRoles = JSON.parse(localStorage.getItem('userRoles')) || [];
 
   // Check if user is a teacher
-  const isTeacher = userRoles.includes('Teacher');
+  const isTeacher = userRoles.includes('Teachers');
 
   const handleLogout = () => {
     loginServices.logout().then(() => {
@@ -28,9 +28,7 @@ const NavigationBar = () => {
             <Nav.Link href="/" className="fs-6">Home</Nav.Link>
             <Nav.Link href="/courses" className="fs-6">Courses</Nav.Link>
             {isTeacher && <Nav.Link href="/create-course" className="fs-6">Create a course</Nav.Link>}
-            {isTeacher && <Nav.Link href="/upload-content" className="fs-6">Upload Content</Nav.Link>}
-            <Nav.Link href="/course/1/contents" className="fs-6">View content </Nav.Link>
-            <Nav.Link href="/user-search" className="fs-6">User Search </Nav.Link>
+            {isTeacher && <Nav.Link href="/user-search" className="fs-6">Student Search</Nav.Link>}
             <Nav.Link href="/login" className="fs-6">Login</Nav.Link>
             <Nav.Link href="/chatHome" className="fs-6">Chat</Nav.Link>
             <Nav.Link href="/register" className="fs-6">Register</Nav.Link>

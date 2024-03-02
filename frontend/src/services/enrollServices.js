@@ -3,7 +3,6 @@ import getCsrfToken from './csrfToken';
 
 const enrollStudentInCourse = (courseId, studentId) => {
     const csrfToken = getCsrfToken();
-    // Data to be sent in the POST request
     const postData = {
         "student": parseInt(studentId, 10) ,
         "course":  parseInt(courseId, 10)

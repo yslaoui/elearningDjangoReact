@@ -22,16 +22,15 @@ const RegistrationPage = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // Convert age to an integer before sending
         const registrationData = {
             ...userData,
-            age: parseInt(userData.age, 10) || 0, // Convert age to integer, default to 0 if conversion fails
+            age: parseInt(userData.age, 10) || 0, 
         };
 
         registrationServices.register(registrationData)
             .then(response => {
                 alert('Registration successful');
-                navigate('/');
+                navigate('/login');
             })
             .catch(error => {
                 alert('Registration failed');

@@ -37,8 +37,6 @@ def logout_request(request):
     return Response({"message": "Logged out successfully"}, status=200)
 
     
-
-
 @api_view(['POST'])
 def register_user(request):
     print("Request data:", request.data)

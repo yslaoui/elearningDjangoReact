@@ -49,7 +49,8 @@ const StudentInfo = () => {
         .catch(error => {
           console.error('Error fetching data:', error);
         });
-    
+
+      
       studentServices.getEnrolledCourses()
         .then(response => {
             const enrolledCourses = response.data.map(enrollment => enrollment.course_detail);

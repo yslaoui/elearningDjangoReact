@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Table, Form } from 'react-bootstrap';
 import studentServices from '../services/studentServices';
 import { Link } from 'react-router-dom';
+import NavigationBar from './NavigationBar';
+
 
 const UserSearch = () => {
   const [students, setStudents] = useState([]);
@@ -27,6 +29,7 @@ const UserSearch = () => {
 
   return (
     <div>
+      <NavigationBar/>
       <h2>Student List</h2>
       <Form.Group className="mb-3">
         <Form.Label>Filter by First Name</Form.Label>
